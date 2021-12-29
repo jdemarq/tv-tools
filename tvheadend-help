@@ -1,0 +1,27 @@
+# tvheadend
+# Multi EPG Source XMLTV
+
+1 - Make & Run : /config/data/update-all.sh from the example :
+  # Exemple curl
+  echo "UPDATE: xmltv-1.xml"
+  curl 'https://titi.ch/xmltv/xmltv-....xml' -H '...' > "/config/data/xmltv-full.xml"
+  
+  # Exemple wget
+  echo "UPDATE: xmltv-2.xml"
+  wget "https://toto.xml" -O /config/data/toto.xml
+  
+  # Exemple plugin tvheandend, multiple configuration
+  /usr/bin/tv_grab_fr --config-file /config/.xmltv/tv_grab_1.conf --output /config/data/tv_grab_1.xml
+  /usr/bin/tv_grab_fr --config-file /config/.xmltv/tv_grab_2.conf --output /config/data/tv_grab_2.xml
+
+# Here is a hack to bypass tv_grab_combiner sending "--config-file",
+# allowing it to work with other grabbers (than from the wizard)
+# Add a trailing && :
+2 - Edit /config/.xmltv/tv_grab_combiner.conf
+grabber=/usr/bin/tv_cat /config/data/toto.xml &&;
+grabber=/usr/bin/tv_cat /confi/data/tv_grab_1.xml &&;
+grabber=/usr/bin/tv_cat /confi/data/tv_grab_2.xml &&;
+
+# Enable Combine Grabber Module  :
+3 - tvheadend menu : Configuration/Channel EPG/EPG Grabber Modules
+Enable 'Internal XMLTV: Combine data from several other grabbers', save
